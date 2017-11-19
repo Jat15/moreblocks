@@ -6,63 +6,58 @@ Licensed under the zlib license. See LICENSE.md for more information.
 --]]
 
 local default_nodes = { -- Default stairs/slabs/panels/microblocks:
-	"stone",
-	"stone_block",
-	"cobble",
-	"mossycobble",
-	"brick",
-	"sandstone",
-	"steelblock",
-	"goldblock",
-	"copperblock",
-	"bronzeblock",
-	"diamondblock",
-	"tinblock",
-	"desert_stone",
-	"desert_stone_block",
-	"desert_cobble",
-	"meselamp",
-	"glass",
-	"tree",
-	"wood",
-	"jungletree",
-	"junglewood",
-	"pine_tree",
-	"pine_wood",
-	"acacia_tree",
-	"acacia_wood",
-	"aspen_tree",
-	"aspen_wood",
-	"obsidian",
-	"obsidian_block",
-	"obsidianbrick",
-	"obsidian_glass",
-	"stonebrick",
-	"desert_stonebrick",
-	"sandstonebrick",
-	"silver_sandstone",
-	"silver_sandstone_brick",
-	"silver_sandstone_block",
-	"desert_sandstone",
-	"desert_sandstone_brick",
-	"desert_sandstone_block",
-	"sandstone_block",
-	"coral_skeleton",
+	"default:stone",
+	"default:stone_block",
+	"default:cobble",
+	"default:mossycobble",
+	"default:brick",
+	"default:sandstone",
+	"default:steelblock",
+	"default:goldblock",
+	"default:copperblock",
+	"default:bronzeblock",
+	"default:diamondblock",
+	"default:tinblock",
+	"default:desert_stone",
+	"default:desert_stone_block",
+	"default:desert_cobble",
+	"default:meselamp",
+	"default:glass",
+	"default:tree",
+	"default:wood",
+	"default:jungletree",
+	"default:junglewood",
+	"default:pine_tree",
+	"default:pine_wood",
+	"default:acacia_tree",
+	"default:acacia_wood",
+	"default:aspen_tree",
+	"default:aspen_wood",
+	"default:obsidian",
+	"default:obsidian_block",
+	"default:obsidianbrick",
+	"default:obsidian_glass",
+	"default:stonebrick",
+	"default:desert_stonebrick",
+	"default:sandstonebrick",
+	"default:silver_sandstone",
+	"default:silver_sandstone_brick",
+	"default:silver_sandstone_block",
+	"default:desert_sandstone",
+	"default:desert_sandstone_brick",
+	"default:desert_sandstone_block",
+	"default:sandstone_block",
+	"default:coral_skeleton",
 	"farming:straw"
 }
 
-for _, name in pairs(default_nodes) do
-	local nodename = "default:"..name
-	local a,b = string.find(name, ":")
-	if b then
-		nodename = name
-		name = string.sub(name, b+1)
-	end
+for _, nodename in pairs(default_nodes) do	
+	local mod, name = nodename:match("(.*):(.*)")
 	local ndef = minetest.registered_nodes[nodename]
 	if ndef then
 		local drop
 		if type(ndef.drop) == "string" then
-			drop = ndef.drop:sub((b or 8)+1)
+			drop = ndef.drop:sub(mod:len()+2)
 		end
 
 		local tiles = ndef.tiles
@@ -79,6 +74,7 @@ for _, name in pairs(default_nodes) do
 			sunlight_propagates = true,
 			light_source = ndef.light_source
 		})
+		stairsplus:register_xdecor_alias_all(mod, name, "moreblocks", name, false)
 	end
 end
 
